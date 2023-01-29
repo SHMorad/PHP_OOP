@@ -1,9 +1,9 @@
 <?php
 // defendency injection or invesion ob control
 
-// ioc = inversion ob control
+// ioc = inversion of control
 
-
+/* 
 interface BaseStudent{
     function displayName();
 }
@@ -48,6 +48,41 @@ $st = new student("Morad Patwary");
 $ist = new ImporoveStudent("Mehedi miraj", "mr");
 $sm= new studentManager();
 $sm->introduceStudent($st);
-$sm->introduceStudent($ist);
+$sm->introduceStudent($ist); */
 
+
+interface BaseStorage{
+    function setFile();
+    function writeData();
+    function setMode();
+}
+class storage implements BaseStorage{
+    private $fn;
+    private $mode;
+    function __construct($fn, $mode =null){
+        $this->setFileName($fn);
+        $this->mode = $mode;
+    }
+    function setFileName($fn){
+        $this->fn = $fn;
+    }
+    function writeData($data){
+        file_put_contents($this->fn =$fn, $data, $this->mode);
+    }
+    function setMode(){
+        $this->mode = $mode;
+    }
+}
+
+class DataManager{
+    function saveData(BaseStorage $storage, $data){
+        $storage->writeData($data);
+    }
+}
+
+$file = new storage("/tmp/abcd.txt");
+$file->setMode(FILE_APPEND);
+$file->setMode(null);
+$dm = new DataManager();
+$dm->saveData($file, "Morad patwary");
 ?>
